@@ -1,9 +1,9 @@
 var http = require('http');
 var path = require('path');
-const express = require("express");
+var express = require("express");
 var bodyParser = require("body-parser");
-const app = express();
-const port = process.env.PORT || 3000;
+var app = express();
+var port = process.env.PORT || 3000;
 
 
 
@@ -12,14 +12,20 @@ app.set("view engine",'ejs');
 app.use(bodyParser.urlencoded({encoded: true}));
 
 var task = ["clean","cook"];
+var complete = ['est','sleep'];
 
 app.get('/', function (req, res){
-    res.render("index");
+    res.render("index", {task:task, complete:complete});
 });
 
 app.post('/addtask', function(req,res){
     var newTask = req.body.newtask;
     task.push(newTask);
+    res.redirect('/');
+});
+
+app.post('/removetask', function(req,res){
+
     res.redirect('/');
 });
 
