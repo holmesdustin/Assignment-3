@@ -25,15 +25,15 @@ app.post('/addtask', function(req,res){
 });
 
 app.post('/removetask', function(req,res){
-    var completTask = req.body.check;
+    var completeTask = req.body.check;
     if(typeof completeTask === "string"){
-        complete.push(completTask);
+        complete.push(completeTask);
         task.splice(task.indexOf(completeTask), 1);
     }
     else if (typeof completeTask === "object"){
         for(var i = 0; i < completeTask.length; i++){
-           complete.push(completTask[i]);
-           task.splice(task.indexOf(completeTask), 1);
+           complete.push(completeTask[i]);
+           task.splice(task.indexOf(completeTask[i]), 1);
         }
     }
     res.redirect('/');
