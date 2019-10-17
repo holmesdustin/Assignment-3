@@ -12,7 +12,7 @@ app.set("view engine",'ejs');
 app.use(bodyParser.urlencoded({encoded: true}));
 
 var task = ["clean","cook"];
-var complete = ['est','sleep'];
+var complete = ['eat','sleep'];
 
 app.get('/', function (req, res){
     res.render("index", {task:task, complete:complete});
@@ -25,7 +25,14 @@ app.post('/addtask', function(req,res){
 });
 
 app.post('/removetask', function(req,res){
+    var completTask = req.body.check;
+    if(typeof completeTask === "string"){
+        complete.push(completTask);
+        task.splice(task.indexOf(completeTask), 1);
+    }
+    else if (typeof completeTask === "object"){
 
+    }
     res.redirect('/');
 });
 
