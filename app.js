@@ -28,9 +28,8 @@ app.get('/comic', function(req, res) {
     var ran_num = Math.floor(Math.random() * 1000) + 1;
     getComic(ran_num, res, "comic");
 });
-
 app.get('random', function(req, res) {
-    var ran_num = Math.floor(Math.random() * 2219) + 1;
+    var ran_num = Math.floor(Math.random() * 1000) + 1;
     getComic(ran_num, res, "random");
 });
 
@@ -42,8 +41,6 @@ function getComic(ran_num, res, page){
             var object = JSON.parse(body);
 
             res.render(page, { img_url: object.img, title: object.title, year: object.year });
-        } else {
-            res.render(page, { img_url: "", title: "cant find", year: "can't get the year" });
         }
     });
 }
