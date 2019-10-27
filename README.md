@@ -5,3 +5,7 @@ This will use node to display current and random comic with a random comic butto
 
 #URL
 url: https://assignment3-563787.herokuapp.com/
+
+#issues 
+Internal Server Error.
+I think i have an error in the app.js but im not sure what it is.
