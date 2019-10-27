@@ -6,40 +6,66 @@ var app = express();
 var port = process.env.PORT || 3000;
 
 
-
 app.set('views',path.join(__dirname,'views'));
 app.set("view engine",'ejs');
 app.use(express.static("public"));
+
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({encoded: true}));
 
-var task = ["clean","cook"];
-var complete = ['eat','sleep'];
 
-app.get('/', function (req, res){
-    res.render("index", {task:task, complete:complete});
-});
-
-app.post('/addtask', function(req,res){
-    var newTask = req.body.newtask;
-    task.push(newTask);
-    res.redirect('/');
-});
-
-app.post('/removetask', function(req,res){
-    var completeTask = req.body.check;
-    if(typeof completeTask === "string"){
-        complete.push(completeTask);
-        task.splice(task.indexOf(completeTask), 1);
-    }
-    else if (typeof completeTask === "object"){
-        for(var i = 0; i < completeTask.length; i++){
-           complete.push(completeTask[i]);
-           task.splice(task.indexOf(completeTask[i]), 1);
+app.get('/', function(req, res) {
+    var request = require('request');
+    request("https://xkcd.com/info.0.json", function(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            var object = JSON.parse(body);
+            res.render("index", { img_url: object.img, title: object.title, year: object.year });
         }
-    }
-    res.redirect('/');
+    });
 });
 
-http.createServer(app).listen(port, function(){
+app.get('/comic', function(req, res) {
+    var ran_num = Math.floor(Math.random() * 1000) + 1;
+    getComic(ran_num, res, "comic");
+});
+
+app.get('random', function(req, res) {
+    var ran_num = Math.floor(Math.random() * 2219) + 1;
+    getComic(ran_num, res, "random");
+});
+
+
+function getComic(ran_num, res, page){
+    var request = require('request');
+    request("https://xkcd.com/" + ran_num + "/info.0.json", function(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            var object = JSON.parse(body);
+
+            res.render(page, { img_url: object.img, title: object.title, year: object.year });
+        } else {
+            res.render(page, { img_url: "", title: "cant find", year: "can't get the year" });
+        }
+    });
+}
+
+http.createServer(app).listen(port, function() {
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
